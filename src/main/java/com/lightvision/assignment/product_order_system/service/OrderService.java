@@ -26,13 +26,14 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemService orderItemService;
     private final ProductService productService;
+    private final UserService userService;
 
     @Transactional
-    public OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO) {
+    public OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO, String userId) {
 
         Order order = new Order();
         order.setOrderDate(LocalDateTime.now());
-
+        order.setUser(userService.findById(userId));
 
         List<OrderItem> builtOrderItems = new ArrayList<>();
         BigDecimal totalAmount = BigDecimal.ZERO;
@@ -61,6 +62,12 @@ public class OrderService {
     public List<OrderResponseDTO> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
         return orders.stream().map(this::mapToResponseDTO).collect(Collectors.toList());
+    }
+
+    public List<OrderResponseDTO> getMyOrders(String userId) {
+        return orderRepository.findByUser_Id(userId).stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
     }
 
     public OrderResponseDTO getOrderById(String id) {

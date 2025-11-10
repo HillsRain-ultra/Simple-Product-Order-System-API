@@ -23,3 +23,5 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
+jwt:
+  signerKey: "148c5ec439de396a29923455440add1d6045f0de57b81d7bae1a7d1780215408"
