@@ -16,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 public class OrderItemRequestDTO {
 
     @Schema(description = "The unique ID of the product to purchase. (Hint: Get this from 'GET /api/products')",
-            example = "0a4a8d46-8e5f-4a0b-8d1f-8e5f4a0b8d1f") // <<< (2) GUIDANCE
+            example = "9c8a6583-540d-407a-903d-026bb5898380") // <<< (2) GUIDANCE
     @NotEmpty
     String productId;
 
