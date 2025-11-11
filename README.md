@@ -65,13 +65,31 @@ The application uses a `DataInitializer` to pre-fill the database with sample da
 | **ADMIN** | `admin@gmail.com` | `admin123` |
 | **CUSTOMER** | `customer@gmail.com` | `customer123` |
 
+> **Note:** It is highly recommended to use the **`ADMIN`** account (`admin@gmail.com`) for testing. This role has full access to all APIs, including the `ADMIN`-only Product Management endpoints, allowing for a complete evaluation.
+---
+
 ## 4. API Specification (Swagger UI)
 
-An interactive API documentation (Swagger UI) is available. Once the application is running, you can access it here:
+An interactive API documentation (Swagger UI) is available in two ways:
+
+### 4.1. Live Deployed Version (Recommended)
+
+The application is deployed on Render's free tier. You can access the live documentation and test the API directly here:
+
+**[https://simple-product-order-system-api.onrender.com/swagger-ui/index.html](https://simple-product-order-system-api.onrender.com/swagger-ui/index.html)**
+
+> **Important Free Tier Note:**
+> This service is hosted on a free plan, which will **spin down (sleep) after 15 minutes of inactivity**.
+>
+> When you first access the link, the server needs to "wake up." This **"cold start" may take 30-60 seconds**. If you see a **502 Bad Gateway** error, please **wait 30 seconds and refresh the page**. The service will be live.
+
+### 4.2. Local Version
+
+If you are running the application locally from the source code, the documentation is available here:
 
 **[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)**
 
-### Quick Test Flow:
+### 4.3. Quick Test Flow:
 
 1.  Go to `1. Authentication Service` $\to$ `POST /api/auth/login`.
 2.  Use the "Example Value" (or the demo accounts above) to log in and get a JWT **`token`**.
@@ -98,6 +116,12 @@ To solve this, I used a **Junction Table (Associative Entity)** called `order_it
 * `User (ADMIN)` also creates and updates `Product`.
 
 ![EERD Diagram](/docs/eerdLightVision.drawio.png)
+
+---
+
+This conceptual model was then translated into a **Physical Data Model (PDM)** which directly maps to the final database schema and JPA Entities. This model clearly shows the foreign key columns (`user_id`, `order_id`, `product_id`) used to enforce referential integrity.
+
+![Physical Schema Diagram](/docs/db_schema_physical.png)
 
 ### 5.2. Transaction Handling: Atomicity & Concurrency
 
