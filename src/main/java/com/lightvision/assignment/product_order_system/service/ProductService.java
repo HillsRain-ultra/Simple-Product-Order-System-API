@@ -15,8 +15,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final UserService userService;
 
-    public ProductResponseDTO createProduct(ProductRequestDTO productRequestDTO) {
+    public ProductResponseDTO createProduct(ProductRequestDTO productRequestDTO, String userId) {
         Product product = new Product();
 
         product.setName(productRequestDTO.getName());
@@ -24,6 +25,7 @@ public class ProductService {
         product.setPrice(productRequestDTO.getPrice());
         product.setStock(productRequestDTO.getStock());
         product.setCreatedAt(LocalDateTime.now());
+        product.setCreator(userService.findById(userId));
 
         productRepository.save(product);
 
