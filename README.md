@@ -27,17 +27,21 @@
 * **API Documentation:** Interactive API documentation via SpringDoc (Swagger UI) with full authentication support.
 * **Automated Data Seeding:** A `CommandLineRunner` pre-fills the database with demo accounts and products for easy testing.
 
+---
+
 ## 2. Tech Stack
 
 * **Java 21**
 * **Spring Boot 3.3.0**
 * **Spring Security (OAuth2 Resource Server):** For JWT validation and endpoint protection.
 * **Spring Data JPA (Hibernate):** For data persistence and ORM.
-* **MySQL:** Relational database.
+* **MySQL & PostgreSQL:** Relational databases (MySQL for local, Postgres for production deployment).
 * **Nimbus JOSE + JWT:** For manual JWT generation during authentication.
 * **SpringDoc (Swagger UI):** For API documentation.
 * **Lombok:** To reduce boilerplate code.
 * **Maven:** For dependency management.
+
+---
 
 ## 3. How to Run & Test
 
