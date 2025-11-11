@@ -26,4 +26,12 @@ public class Product {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     List<OrderItem> orderItem;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="creator_id")
+    User creator;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="updater_id")
+    User updater;
 }
