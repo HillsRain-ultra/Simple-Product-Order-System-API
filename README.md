@@ -110,18 +110,23 @@ This section details the solutions for the core evaluation points of the assignm
 
 ### 5.1. Database Design (EERD)
 
-The database schema was designed to handle the **Many-to-Many (N:M)** relationship between `Orders` and `Products`. A standard N:M link was insufficient as the system must store the `quantity` and `pricePerUnit` *at the time of purchase*.
+The database schema was designed using a **Conceptual EERD** (Enhanced Entity-Relationship Diagram) to capture the business requirements.
 
-To solve this, I used a **Junction Table (Associative Entity)** called `order_item` (`HAS` in the diagram).
+The core of the design is the **Many-to-Many (N:M)** relationship between `Orders` and `Products`. A standard N:M link was insufficient as the system must store attributes *on the relationship itself* (like `quantity` and `totalPrice`).
 
-* `User (1)` $\to$ (N) `Order`
-* `Order (1)` $\to$ (N) `OrderItem`
-* `Product (1)` $\to$ (N) `OrderItem`
-* `User (ADMIN)` also creates and updates `Product`.
+To solve this, the **`HAS`** relationship was modeled as an **Associative Entity** , as shown in the diagram.
 
 ![EERD Diagram](/docs/eerdLightVision.drawio.png)
 
 ---
+
+This conceptual model is then implemented physically in the database (and in the JPA entities) as follows:
+
+* The `USER` entity maps to the `users` table.
+* The `PRODUCT` entity maps to the `product` table.
+* The `ORDER` entity maps to the `orders` table.
+* The **`HAS`** relationship (Associative Entity) is implemented as the **`order_item`** table/entity, which contains the foreign keys for `order_id` and `product_id`.
+* The `PLACES`, `CREATES`, and `UPDATED` relationships are implemented as Foreign Key relationships in the `orders` and `product` tables, linking back to the `user_id`.
 
 This conceptual model was then translated into a **Physical Data Model (PDM)** which directly maps to the final database schema and JPA Entities. This model clearly shows the foreign key columns (`user_id`, `order_id`, `product_id`) used to enforce referential integrity.
 
