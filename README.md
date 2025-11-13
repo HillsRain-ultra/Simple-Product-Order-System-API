@@ -141,10 +141,13 @@ This conceptual model was then translated into a **Physical Data Model (PDM)** w
 The `createOrder` method is a complex "Unit of Work". It must validate all items, calculate prices, and deduct stock. This entire process must be **Atomic**: it either *all* succeeds, or *nothing* is saved to the database.
 
 1.  **`@Transactional`:** The entire `createOrder` method in `OrderService` is annotated with `@Transactional`.
-2.  **Default Rollback Behavior:** By default, Spring's `@Transactional` will automatically trigger a **ROLLBACK** for any `RuntimeException` (hoặc `Error`).
-3.  **Fail-Fast Validation:** The code is designed to throw an `IllegalArgumentException` (which is a `RuntimeException`) if stock is insufficient.
-4.  **Result:** When this exception is thrown, the `@Transactional` annotation catches it and automatically rolls back the entire transaction. This prevents any partial data (like stock being deducted for item 1 but not item 2) from ever being committed to the database.
+2.  **Default Rollback Behavior:** By default, Spring's transaction manager will automatically trigger a **ROLLBACK** for any `RuntimeException` (such as `IllegalArgumentException` or `ResourceNotFoundException`).
+3.  **Result:** If an exception occurs (e.g., stock insufficient), the transaction rolls back, ensuring no partial data is committed.
 
+**Implementation Evidence:**
+As shown in the code snippet below, the `@Transactional` annotation wraps the entire logic. This ensures that fetching the User, iterating through OrderItems, locking products, and the final `save()` all happen within a single database transaction context.
+
+![Transaction Code Logic](/docs/transaction_code.png)
 #### B. Concurrency (The "Deduct Stock" Problem)
 
 Atomicity alone does not solve **race conditions** (e.g., two users buying the last item simultaneously).
